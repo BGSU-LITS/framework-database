@@ -1,0 +1,21 @@
+{% set table = table ?? pagination %}
+{% set table_keys = table_keys ?? table|first|keys %}
+{% set table_headers = table_headers ?? table_keys %}
+<table class="table">
+<thead>
+<tr>
+{% for header in table_headers %}
+<th class="table_key_{{ table_keys[loop.index0] }}">{{ header }}</th>
+{% endfor %}
+</tr>
+</thead>
+<tbody>
+{% for row in table %}
+<tr>
+{% for key in table_keys %}
+<td class="table_key_{{ key }}">{{ row[key] }}</td>
+{% endfor %}
+</tr>
+{% endfor %}
+</tbody>
+</table>
