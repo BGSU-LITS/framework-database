@@ -11,11 +11,13 @@
     "require": {
         "php": "^7.4",
         "ext-PDO": "*",
-        "bgsu-lits/framework": "^1.7.0",
+        "bgsu-lits/framework": "^1.9.0",
         "latitude/latitude": "^4.2",
         "lulco/phoenix": "^1.10",
         "pagerfanta/pagerfanta": "^3.5",
-        "phpoffice/phpspreadsheet": "^1.20"
+        "phpoffice/phpspreadsheet": "^1.20",
+        "slim/http": "^1.2",
+        "slim/slim": "^4.9"
     },
     "require-dev": {
         "bamarni/composer-bin-plugin": "^1.3",
