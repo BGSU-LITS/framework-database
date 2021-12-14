@@ -7,8 +7,9 @@ namespace Lits;
 use Latitude\QueryBuilder\Engine\CommonEngine;
 use Latitude\QueryBuilder\Engine\MySqlEngine;
 use Latitude\QueryBuilder\Engine\PostgresEngine;
+use Latitude\QueryBuilder\Query\SelectQuery;
 use Latitude\QueryBuilder\QueryFactory;
-use Latitude\QueryBuilder\QueryInterface;
+use Latitude\QueryBuilder\QueryInterface as Query;
 use Lits\Config\DatabaseConfig;
 use Lits\Exception\DuplicateInsertException;
 use Lits\Exception\InvalidConfigException;
@@ -70,7 +71,7 @@ final class Database
         $this->execute($query);
     }
 
-    public function execute(QueryInterface $query): \PDOStatement
+    public function execute(Query $query): \PDOStatement
     {
         $compiled = $query->compile();
 
@@ -189,6 +190,11 @@ final class Database
                 'migration' => $this->config->migration,
             ],
         ];
+    }
+
+    public function paginate(SelectQuery $query): Pagination
+    {
+        return new Pagination($this, $query);
     }
 
     /**
