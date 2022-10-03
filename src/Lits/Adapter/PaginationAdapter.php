@@ -13,6 +13,7 @@ use function Latitude\QueryBuilder\alias;
 use function Latitude\QueryBuilder\express;
 use function Latitude\QueryBuilder\func;
 
+/** @implements Adapter<array<array-key, mixed>> */
 class PaginationAdapter implements Adapter
 {
     private Database $database;
@@ -41,7 +42,7 @@ class PaginationAdapter implements Adapter
         return 0;
     }
 
-    /** @return iterable<array-key, mixed> */
+    /** @return iterable<array-key, array<array-key, mixed>> */
     public function getSlice(int $offset, int $length): iterable
     {
         $statement = $this->database->execute(
@@ -52,6 +53,7 @@ class PaginationAdapter implements Adapter
                 ->limit($length)
         );
 
+        /** @var array<array-key, array<array-key, mixed>>|false */
         $slice = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
         if (\is_array($slice)) {

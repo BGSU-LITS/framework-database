@@ -82,6 +82,28 @@ final class Database
     }
 
     /**
+     * @param array<string, ?scalar> $map_unique
+     * @throws \PDOException
+     */
+    public function findId(
+        string $table,
+        string $field_id,
+        array $map_unique
+    ): int {
+        $query = $this->query
+            ->select($field_id)
+            ->from($this->prefix . $table);
+
+        foreach ($map_unique as $key => $value) {
+            $query->andWhere(field($key)->eq($value));
+        }
+
+        $statement = $this->execute($query->limit(1));
+
+        return (int) $statement->fetchColumn();
+    }
+
+    /**
      * @param array<string, ?scalar> $map
      * @throws DuplicateInsertException
      * @throws \PDOException
@@ -131,16 +153,7 @@ final class Database
                 return null;
             }
 
-            $query = $this->query
-                ->select($field_id)
-                ->from($this->prefix . $table);
-
-            foreach ($map_unique as $key => $value) {
-                $query->andWhere(field($key)->eq($value));
-            }
-
-            $statement = $this->execute($query->limit(1));
-            $id = (int) $statement->fetchColumn();
+            $id = $this->findId($table, $field_id, $map_unique);
         }
 
         if ($id > 0) {

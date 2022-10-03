@@ -88,6 +88,31 @@ trait DatabaseFileTrait
             );
         }
 
+        $spreadsheet = $this->writeFileSpreadsheet();
+
+        $writer = IOFactory::createWriter($spreadsheet, \ucfirst($extension));
+        $writer->save($stream);
+
+        $name = \strtolower(
+            \implode('_', \array_slice($this->hierarchy(), 1)) . '.' .
+            $extension
+        );
+
+        try {
+            return $this->response
+                ->withFileDownload($stream, $name, $contentType)
+                ->withHeader('Cache-Control', 'max-age=0');
+        } catch (InvalidArgumentException $exception) {
+            throw new HttpInternalServerErrorException(
+                $this->request,
+                'Could not download file',
+                $exception
+            );
+        }
+    }
+
+    private function writeFileSpreadsheet(): Spreadsheet
+    {
         $spreadsheet = new Spreadsheet();
 
         $col = 0;
@@ -121,24 +146,6 @@ trait DatabaseFileTrait
             $col--;
         }
 
-        $writer = IOFactory::createWriter($spreadsheet, \ucfirst($extension));
-        $writer->save($stream);
-
-        $name = \strtolower(
-            \implode('_', \array_slice($this->hierarchy(), 1)) . '.' .
-            $extension
-        );
-
-        try {
-            return $this->response
-                ->withFileDownload($stream, $name, $contentType)
-                ->withHeader('Cache-Control', 'max-age=0');
-        } catch (InvalidArgumentException $exception) {
-            throw new HttpInternalServerErrorException(
-                $this->request,
-                'Could not download file',
-                $exception
-            );
-        }
+        return $spreadsheet;
     }
 }

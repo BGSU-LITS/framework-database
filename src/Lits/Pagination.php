@@ -8,7 +8,7 @@ use Latitude\QueryBuilder\Query\SelectQuery;
 use Lits\Adapter\PaginationAdapter;
 use Pagerfanta\Pagerfanta;
 
-/** @extends Pagerfanta<mixed[]> */
+/** @extends Pagerfanta<array<array-key, mixed>> */
 final class Pagination extends Pagerfanta
 {
     public function __construct(Database $database, SelectQuery $query)

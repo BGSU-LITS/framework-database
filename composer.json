@@ -25,22 +25,32 @@
         "phpunit/phpunit": "^9",
         "roave/security-advisories": "dev-master"
     },
+    "autoload": {
+        "psr-4": {
+            "Lits\\": "src/Lits"
+        },
+        "exclude-from-classmap": [
+            "/src/Lits/Test/"
+        ]
+    },
     "config": {
+        "allow-plugins": {
+            "bamarni/composer-bin-plugin": true,
+            "neronmoon/scriptsdev": true
+        },
         "sort-packages": true
     },
     "extra": {
+        "bamarni-bin": {
+            "bin-links": true,
+            "forward-command": true
+        },
         "scripts-dev": {
             "phpcbf": "phpcbf ./ --standard=phpcs.xml",
             "phpcs": "phpcs ./ --standard=phpcs.xml",
             "phplint": "phplint ./ --exclude=vendor",
             "phpstan": "phpstan analyse -c phpstan.neon",
             "phpunit": "phpunit -c phpunit.xml",
-            "post-install-cmd": [
-                "@composer bin all install --ansi"
-            ],
-            "post-update-cmd": [
-                "@composer bin all update --ansi"
-            ],
             "psalm": "psalm --config=psalm.xml",
             "test": [
                 "@phplint",
@@ -50,13 +60,5 @@
                 "@phpunit"
             ]
         }
-    },
-    "autoload": {
-        "psr-4": {
-            "Lits\\": "src/Lits"
-        },
-        "exclude-from-classmap": [
-            "/src/Lits/Test/"
-        ]
     }
 }
