@@ -8,6 +8,7 @@ use InvalidArgumentException;
 use PhpOffice\PhpSpreadsheet\Cell\DataType;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Exception as WriterException;
 use Slim\Exception\HttpInternalServerErrorException;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
@@ -91,7 +92,16 @@ trait DatabaseFileTrait
         $spreadsheet = $this->writeFileSpreadsheet();
 
         $writer = IOFactory::createWriter($spreadsheet, \ucfirst($extension));
-        $writer->save($stream);
+
+        try {
+            $writer->save($stream);
+        } catch (WriterException $exception) {
+            throw new HttpInternalServerErrorException(
+                $this->request,
+                'Could not create download file',
+                $exception
+            );
+        }
 
         $name = \strtolower(
             \implode('_', \array_slice($this->hierarchy(), 1)) . '.' .
@@ -111,6 +121,7 @@ trait DatabaseFileTrait
         }
     }
 
+    /** @throws HttpInternalServerErrorException */
     private function writeFileSpreadsheet(): Spreadsheet
     {
         $spreadsheet = new Spreadsheet();
