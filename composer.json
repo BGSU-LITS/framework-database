@@ -2,6 +2,7 @@
     "name": "bgsu-lits/framework-database",
     "description": "Database for LITS Framework.",
     "license": "MIT",
+    "version": "1.2.1",
     "authors": [
         {
             "name": "John Kloor",

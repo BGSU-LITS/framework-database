@@ -45,13 +45,13 @@ abstract class DatabaseData extends Data
     }
 
     /** @param array<string, string|null> $row */
-    protected static function findRowBool(array $row, string $key): ?bool
+    protected static function findRowBool(array $row, string $key): bool
     {
         if (isset($row[$key])) {
             return (bool) $row[$key];
         }
 
-        return null;
+        return false;
     }
 
     /** @param array<string, string|null> $row */
@@ -78,7 +78,11 @@ abstract class DatabaseData extends Data
     protected static function findRowString(array $row, string $key): ?string
     {
         if (isset($row[$key])) {
-            return \trim($row[$key]);
+            $data = \trim($row[$key]);
+
+            if ($data !== '') {
+                return $data;
+            }
         }
 
         return null;

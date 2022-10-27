@@ -1,20 +1,20 @@
-<nav class="nav-page" aria-label="pagination">
-<div>
-<a class="nav-page-first"{% if pagination.hasPreviousPage() %} href="?page=1"{% endif %}>First</a>
-<a class="nav-page-previous"{% if pagination.hasPreviousPage() %} href="?page={{ pagination.getPreviousPage() }}"{% endif %}>Previous</a>
-<a class="nav-page-next"{% if pagination.hasNextPage() %} href="?page={{ pagination.getNextPage() }}"{% endif %}>Next</a>
-<a class="nav-page-last"{% if pagination.hasNextPage() %} href="?page={{ pagination.getNbPages() }}"{% endif %}>Last</a>
+<nav aria-label="pagination" class="bgsu_common_pagination bgsu_common__screen">
+<div class="bgsu_common_pagination_buttons">
+<a class="bgsu_common_button bgsu_common_button__small bgsu_common__arrow_first"{% if pagination.hasPreviousPage() %} href="?page=1"{% endif %}>First</a>
+<a class="bgsu_common_button bgsu_common_button__small bgsu_common__arrow_previous"{% if pagination.hasPreviousPage() %} href="?page={{ pagination.getPreviousPage() }}"{% endif %}>Previous</a>
+<a class="bgsu_common_button bgsu_common_button__small bgsu_common__arrow_next"{% if pagination.hasNextPage() %} href="?page={{ pagination.getNextPage() }}"{% endif %}>Next</a>
+<a class="bgsu_common_button bgsu_common_button__small bgsu_common__arrow_last"{% if pagination.hasNextPage() %} href="?page={{ pagination.getNbPages() }}"{% endif %}>Last</a>
 </div>
-<div>
-<a aria-current="page">
+<div aria-current="page" class="bgsu_common_pagination_current">
     {{ pagination_rows|default('Rows') }}
     {{ pagination.getCurrentPageOffsetStart()|number_format }} –
     {{ pagination.getCurrentPageOffsetEnd()|number_format }} of
     {{ pagination.getNbResults()|number_format }}
     {{ pagination_sort }}
-</a>
-{% if pagination_file %}
-<a href="{{ current_url() }}/{{ pagination_file }}">Download as {{ pagination_file|upper }}</a>
-{% endif %}
 </div>
+{% if pagination_file %}
+<div>
+<a href="{{ current_url() }}/{{ pagination_file }}">Download as {{ pagination_file|upper }}</a>
+</div>
+{% endif %}
 </nav>

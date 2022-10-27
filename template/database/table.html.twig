@@ -1,11 +1,11 @@
 {% set table = table ?? pagination %}
 {% set table_keys = table_keys ?? table|first|keys %}
 {% set table_headers = table_headers ?? table_keys %}
-<table class="table">
+<table class="bgsu_common_table bgsu_common__full">
 <thead>
 <tr>
 {% for header in table_headers %}
-<th class="table_key_{{ table_keys[loop.index0] }}">{{ header }}</th>
+<th class="bgsu_common_table_key bgsu_common_table_key__{{ table_keys[loop.index0] }}">{{ header }}</th>
 {% endfor %}
 </tr>
 </thead>
@@ -13,7 +13,7 @@
 {% for row in table %}
 <tr>
 {% for key in table_keys %}
-<td class="table_key_{{ key }}">{{ row[key] }}</td>
+<td class="bgsu_common_table_key bgsu_common_table_key__{{ key }}">{{ row[key] }}</td>
 {% endfor %}
 </tr>
 {% endfor %}
