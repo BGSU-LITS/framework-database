@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Lits\Adapter;
 
-use Latitude\QueryBuilder\ExpressionInterface as Expression;
 use Latitude\QueryBuilder\Query\SelectQuery;
 use Lits\Database;
 use Pagerfanta\Adapter\AdapterInterface as Adapter;
@@ -30,7 +29,7 @@ class PaginationAdapter implements Adapter
         $statement = $this->database->execute(
             $this->database->query
                 ->select(func('count', '*'))
-                ->from($this->aliasQuery())
+                ->from(alias(express('(%s)', $this->query), 'query'))
         );
 
         $count = (int) $statement->fetchColumn();
@@ -46,9 +45,7 @@ class PaginationAdapter implements Adapter
     public function getSlice(int $offset, int $length): iterable
     {
         $statement = $this->database->execute(
-            $this->database->query
-                ->select()
-                ->from($this->aliasQuery())
+            $this->query
                 ->offset($offset)
                 ->limit($length)
         );
@@ -61,10 +58,5 @@ class PaginationAdapter implements Adapter
         }
 
         return [];
-    }
-
-    private function aliasQuery(): Expression
-    {
-        return alias(express('(%s)', $this->query), 'query');
     }
 }
