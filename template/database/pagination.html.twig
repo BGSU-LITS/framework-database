@@ -1,3 +1,4 @@
+{% if pagination|length %}
 <nav aria-label="pagination" class="bgsu_common_pagination bgsu_common__screen">
 <div class="bgsu_common_pagination_buttons">
 <a class="bgsu_common_button bgsu_common_button__small bgsu_common__arrow_first"{% if pagination.hasPreviousPage() %} href="?page=1"{% endif %}>First</a>
@@ -18,3 +19,4 @@
 </div>
 {% endif %}
 </nav>
+{% endif %}

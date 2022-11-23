@@ -1,4 +1,5 @@
 {% set table = table ?? pagination %}
+{% if table|length > 0 %}
 {% set table_keys = table_keys ?? table|first|keys %}
 {% set table_headers = table_headers ?? table_keys %}
 <table class="bgsu_common_table bgsu_common__full">
@@ -19,3 +20,6 @@
 {% endfor %}
 </tbody>
 </table>
+{% else %}
+<p><strong>No {{ pagination_rows|default('Rows') }} Available.</strong></p>
+{% endif %}
