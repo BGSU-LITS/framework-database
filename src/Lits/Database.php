@@ -18,17 +18,15 @@ use function Latitude\QueryBuilder\field;
 
 final class Database
 {
-    public DatabaseConfig $config;
     public \PDO $pdo;
     public QueryFactory $query;
     public string $prefix = '';
 
     /** @throws InvalidConfigException */
-    public function __construct(DatabaseConfig $config)
+    public function __construct(public DatabaseConfig $config)
     {
         $config->testSettings();
 
-        $this->config = $config;
         $dsn = $config->type . ':host=' . $config->host;
 
         if (\is_int($config->port)) {
@@ -41,7 +39,7 @@ final class Database
             $dsn,
             $config->username,
             $config->password,
-            [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION]
+            [\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION],
         );
 
         if ($config->type === 'mysql') {
@@ -88,7 +86,7 @@ final class Database
     public function findId(
         string $table,
         string $field_id,
-        array $map_unique
+        array $map_unique,
     ): int {
         $query = $this->query
             ->select($field_id)
@@ -112,7 +110,7 @@ final class Database
     {
         try {
             $this->execute(
-                $this->query->insert($this->prefix . $table, $map)
+                $this->query->insert($this->prefix . $table, $map),
             );
 
             $id = (int) $this->pdo->lastInsertId();
@@ -121,7 +119,7 @@ final class Database
                 throw new DuplicateInsertException(
                     'Could not insert duplicate values',
                     0,
-                    $exception
+                    $exception,
                 );
             }
 
@@ -144,11 +142,11 @@ final class Database
         string $table,
         array $map_unique,
         array $map_other = [],
-        ?string $field_id = null
+        ?string $field_id = null,
     ): ?int {
         try {
             $id = $this->insert($table, $map_unique + $map_other);
-        } catch (DuplicateInsertException $exception) {
+        } catch (DuplicateInsertException) {
             if (\is_null($field_id)) {
                 return null;
             }
@@ -172,7 +170,7 @@ final class Database
         string $table,
         array $map_unique,
         array $map_other,
-        string $field_id
+        string $field_id,
     ): ?int {
         $id = $this->insertIgnore($table, $map_unique, $map_other, $field_id);
 
@@ -183,7 +181,7 @@ final class Database
         return $id;
     }
 
-    /** @return mixed[] */
+    /** @return array<mixed> */
     public function migration(): array
     {
         return [
@@ -212,19 +210,18 @@ final class Database
 
     /**
      * @param array<string, ?scalar> $map
-     * @param scalar $id
      * @throws \PDOException
      */
     public function update(
         string $table,
         array $map,
         string $field_id,
-        $id
+        string|int|float|bool $id,
     ): void {
         $this->execute(
             $this->query
                 ->update($this->prefix . $table, $map)
-                ->where(field($field_id)->eq($id))
+                ->where(field($field_id)->eq($id)),
         );
     }
 }

@@ -8,12 +8,9 @@ use Lits\Database;
 
 final class DatabaseActionService
 {
-    public ActionService $service;
-    public Database $database;
-
-    public function __construct(ActionService $service, Database $database)
-    {
-        $this->service = $service;
-        $this->database = $database;
+    public function __construct(
+        public ActionService $service,
+        public Database $database,
+    ) {
     }
 }

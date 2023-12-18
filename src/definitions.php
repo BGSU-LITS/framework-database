@@ -14,6 +14,6 @@ return function (Framework $framework): void {
             assert($settings['database'] instanceof DatabaseConfig);
 
             return new Database($settings['database']);
-        }
+        },
     );
 };

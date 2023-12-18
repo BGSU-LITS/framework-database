@@ -13,15 +13,12 @@ use function Latitude\QueryBuilder\express;
 use function Latitude\QueryBuilder\func;
 
 /** @implements Adapter<array<array-key, mixed>> */
-class PaginationAdapter implements Adapter
+final class PaginationAdapter implements Adapter
 {
-    private Database $database;
-    private SelectQuery $query;
-
-    public function __construct(Database $database, SelectQuery $query)
-    {
-        $this->database = $database;
-        $this->query = $query;
+    public function __construct(
+        private Database $database,
+        private SelectQuery $query,
+    ) {
     }
 
     public function getNbResults(): int
@@ -29,7 +26,7 @@ class PaginationAdapter implements Adapter
         $statement = $this->database->execute(
             $this->database->query
                 ->select(func('count', '*'))
-                ->from(alias(express('(%s)', $this->query), 'query'))
+                ->from(alias(express('(%s)', $this->query), 'query')),
         );
 
         $count = (int) $statement->fetchColumn();
@@ -47,10 +44,10 @@ class PaginationAdapter implements Adapter
         $statement = $this->database->execute(
             $this->query
                 ->offset($offset)
-                ->limit($length)
+                ->limit($length),
         );
 
-        /** @var array<array-key, array<array-key, mixed>>|false */
+        /** @var array<array-key, array<array-key, mixed>>|false $slice */
         $slice = $statement->fetchAll(\PDO::FETCH_ASSOC);
 
         if (\is_array($slice)) {

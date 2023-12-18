@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Lits\Database;
+use Lits\Framework;
 
 $path = getcwd();
 
@@ -14,10 +15,10 @@ if (!file_exists($path)) {
     return [];
 }
 
-/** @var \Lits\Framework $framework */
 $framework = require $path;
+assert($framework instanceof Framework);
 
-/** @var \Lits\Database $database */
 $database = $framework->container()->get(Database::class);
+assert($database instanceof Database);
 
 return $database->migration();

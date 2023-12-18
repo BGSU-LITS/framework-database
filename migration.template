@@ -5,7 +5,7 @@ declare(strict_types=1);
 ###NAMESPACE###use Phoenix\Exception\InvalidArgumentValueException;
 use Phoenix\Migration\AbstractMigration;
 
-class ###CLASSNAME### extends AbstractMigration
+final class ###CLASSNAME### extends AbstractMigration
 {
 ###INDENT###/** @throws InvalidArgumentValueException */
 ###INDENT###protected function up(): void

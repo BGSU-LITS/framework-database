@@ -12,13 +12,11 @@ use Safe\DateTimeImmutable;
 
 abstract class DatabaseData extends Data
 {
-    protected Database $database;
-
-    public function __construct(Settings $settings, Database $database)
-    {
+    public function __construct(
+        Settings $settings,
+        protected Database $database,
+    ) {
         parent::__construct($settings);
-
-        $this->database = $database;
     }
 
     /**
@@ -27,7 +25,7 @@ abstract class DatabaseData extends Data
      */
     protected static function findRowDatetime(
         array $row,
-        string $key
+        string $key,
     ): ?DateTimeImmutable {
         if (isset($row[$key])) {
             try {
@@ -36,7 +34,7 @@ abstract class DatabaseData extends Data
                 throw new InvalidDataException(
                     'The string could not be parsed into a datetime',
                     0,
-                    $exception
+                    $exception,
                 );
             }
         }

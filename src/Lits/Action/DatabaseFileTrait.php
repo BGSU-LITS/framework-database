@@ -16,7 +16,7 @@ use Slim\Interfaces\RouteCollectorProxyInterface as RouteCollectorProxy;
 
 trait DatabaseFileTrait
 {
-    /** @return mixed[][] */
+    /** @return array<array<mixed>> */
     abstract protected function file(): array;
 
     /**
@@ -26,14 +26,14 @@ trait DatabaseFileTrait
     public function csv(
         ServerRequest $request,
         Response $response,
-        array $data
+        array $data,
     ): Response {
         return $this->writeFile(
             $request,
             $response,
             $data,
             'csv',
-            'text/csv; charset=UTF-8'
+            'text/csv; charset=UTF-8',
         );
     }
 
@@ -44,20 +44,21 @@ trait DatabaseFileTrait
     public function xlsx(
         ServerRequest $request,
         Response $response,
-        array $data
+        array $data,
     ): Response {
         return $this->writeFile(
             $request,
             $response,
             $data,
             'xlsx',
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            'application/vnd.openxmlformats-' .
+            'officedocument.spreadsheetml.sheet',
         );
     }
 
     public static function addFileRoutes(
         RouteCollectorProxy $router,
-        string $path
+        string $path,
     ): void {
         $path = \trim($path, '/');
 
@@ -76,7 +77,7 @@ trait DatabaseFileTrait
         Response $response,
         array $data,
         string $extension,
-        string $contentType
+        string $contentType,
     ): Response {
         $this->setup($request, $response, $data);
 
@@ -85,7 +86,7 @@ trait DatabaseFileTrait
         if ($stream === false) {
             throw new HttpInternalServerErrorException(
                 $this->request,
-                'Could not open memory stream'
+                'Could not open memory stream',
             );
         }
 
@@ -99,13 +100,13 @@ trait DatabaseFileTrait
             throw new HttpInternalServerErrorException(
                 $this->request,
                 'Could not create download file',
-                $exception
+                $exception,
             );
         }
 
         $name = \strtolower(
             \implode('_', \array_slice($this->hierarchy(), 1)) . '.' .
-            $extension
+            $extension,
         );
 
         try {
@@ -116,7 +117,7 @@ trait DatabaseFileTrait
             throw new HttpInternalServerErrorException(
                 $this->request,
                 'Could not download file',
-                $exception
+                $exception,
             );
         }
     }
@@ -140,7 +141,7 @@ trait DatabaseFileTrait
                         $col,
                         $row,
                         $file_col,
-                        DataType::TYPE_STRING
+                        DataType::TYPE_STRING,
                     );
 
                 $col++;
