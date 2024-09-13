@@ -11,7 +11,7 @@
     "require": {
         "php": "^8.2",
         "ext-PDO": "*",
-        "bgsu-lits/framework": "v2.1",
+        "bgsu-lits/framework": "^2.1",
         "latitude/latitude": "^4.2",
         "lulco/phoenix": "^2.5",
         "pagerfanta/pagerfanta": "^4.2",
