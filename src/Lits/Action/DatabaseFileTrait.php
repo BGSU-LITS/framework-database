@@ -14,6 +14,7 @@ use Slim\Http\Response;
 use Slim\Http\ServerRequest;
 use Slim\Interfaces\RouteCollectorProxyInterface as RouteCollectorProxy;
 
+/** @phpstan-ignore trait.unused */
 trait DatabaseFileTrait
 {
     /** @return array<array<mixed>> */
@@ -137,9 +138,8 @@ trait DatabaseFileTrait
             foreach ($file_row as $file_col) {
                 $spreadsheet
                     ->getActiveSheet()
-                    ->setCellValueExplicitByColumnAndRow(
-                        $col,
-                        $row,
+                    ->setCellValueExplicit(
+                        [$col, $row],
                         $file_col,
                         DataType::TYPE_STRING,
                     );

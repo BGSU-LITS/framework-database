@@ -19,6 +19,5 @@ $framework = require $path;
 assert($framework instanceof Framework);
 
 $database = $framework->container()->get(Database::class);
-assert($database instanceof Database);
 
 return $database->migration();

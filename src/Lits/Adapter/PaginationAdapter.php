@@ -21,6 +21,7 @@ final class PaginationAdapter implements Adapter
     ) {
     }
 
+    #[\Override]
     public function getNbResults(): int
     {
         $statement = $this->database->execute(
@@ -39,6 +40,7 @@ final class PaginationAdapter implements Adapter
     }
 
     /** @return iterable<array-key, array<array-key, mixed>> */
+    #[\Override]
     public function getSlice(int $offset, int $length): iterable
     {
         $statement = $this->database->execute(
@@ -47,13 +49,6 @@ final class PaginationAdapter implements Adapter
                 ->limit($length),
         );
 
-        /** @var array<array-key, array<array-key, mixed>>|false $slice */
-        $slice = $statement->fetchAll(\PDO::FETCH_ASSOC);
-
-        if (\is_array($slice)) {
-            return $slice;
-        }
-
-        return [];
+        return $statement->fetchAll(\PDO::FETCH_ASSOC);
     }
 }
